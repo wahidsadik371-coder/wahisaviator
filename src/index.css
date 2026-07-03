@@ -1,0 +1,280 @@
+/* Wahid's Aviator — design system.
+   TailwindCSS v4: `@import "tailwindcss"` is the correct entry point (the
+   v3 `@tailwind base/components/utilities` directives are gone). Custom
+   theme values are declared inside `@theme {}` so Tailwind generates the
+   matching utility classes (e.g. `--color-neon-cyan` → `text-neon-cyan`). */
+
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Orbitron", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  --color-neon-cyan: #22d3ee;
+  --color-neon-violet: #a78bfa;
+  --color-neon-pink: #f472b6;
+  --color-neon-lime: #a3e635;
+  --color-neon-gold: #fbbf24;
+  --color-nova-bg: #060814;
+  --color-nova-panel: #0b1024;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+/* CRITICAL: Prevent horizontal scroll at the root.
+   Both html AND body need overflow-x: hidden on mobile.
+   html overflow-x: visible (the default) lets fixed-position
+   children's descendants contribute to scrollWidth even when
+   the fixed parent has overflow: hidden. */
+html {
+  overflow-x: hidden;
+  /* Prevent text size adjust on rotation (iOS Safari) */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  max-width: 100vw;
+  background-color: #05060f;
+  color: #e7ecff;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  /* Prevent overscroll bounce on iOS which can reveal overflow */
+  overscroll-behavior-y: none;
+}
+
+/* Fixed elements should never cause horizontal scroll */
+.fixed {
+  max-width: 100vw;
+}
+
+/* overflow: clip is more aggressive than overflow: hidden — it doesn't
+   create a scroll container, so clipped children cannot contribute to
+   the document's scrollWidth. Used by the Background nebula container. */
+.clip-both {
+  overflow: clip;
+}
+
+/* ---------- Accessibility: visible focus for keyboard users ----------
+   Tailwind v4 ships `outline-none` which removes the default outline. We
+   re-add a visible ring on `:focus-visible` only (mouse clicks keep the
+   none style) so keyboard navigation is perceivable. */
+:focus-visible {
+  outline: 2px solid rgba(34, 211, 238, 0.8);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---------- Surfaces ---------- */
+.glass {
+  background: rgba(17, 22, 48, 0.55);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(140, 160, 255, 0.12);
+}
+
+.glass-strong {
+  background: rgba(11, 16, 36, 0.82);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(140, 160, 255, 0.16);
+}
+
+/* ---------- Glow helpers ---------- */
+.glow-cyan {
+  text-shadow: 0 0 18px rgba(34, 211, 238, 0.65), 0 0 40px rgba(34, 211, 238, 0.25);
+}
+.glow-lime {
+  text-shadow: 0 0 18px rgba(163, 230, 53, 0.65), 0 0 40px rgba(163, 230, 53, 0.25);
+}
+.glow-pink {
+  text-shadow: 0 0 18px rgba(244, 114, 182, 0.7), 0 0 44px rgba(244, 114, 182, 0.3);
+}
+.glow-red {
+  text-shadow: 0 0 22px rgba(248, 113, 113, 0.75), 0 0 50px rgba(248, 113, 113, 0.3);
+}
+
+.drop-glow-cyan {
+  filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.55));
+}
+
+/* ---------- Scrollbars ---------- */
+.nice-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.nice-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.nice-scroll::-webkit-scrollbar-thumb {
+  background: rgba(140, 160, 255, 0.22);
+  border-radius: 999px;
+}
+.nice-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(140, 160, 255, 0.4);
+}
+
+/* ---------- Animations ---------- */
+@keyframes float-up {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.8);
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -120px) scale(1.25);
+  }
+}
+.animate-float-up {
+  animation: float-up 1.6s ease-out forwards;
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(163, 230, 53, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 28px 6px rgba(163, 230, 53, 0.35);
+  }
+}
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+.shimmer {
+  background: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0) 30%,
+    rgba(255, 255, 255, 0.18) 50%,
+    rgba(255, 255, 255, 0) 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2.4s linear infinite;
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-spin-slow {
+  animation: spin-slow 9s linear infinite;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+.animate-bob {
+  animation: bob 2.6s ease-in-out infinite;
+}
+
+@keyframes ring-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Reduced motion ----------
+   Respect the OS-level "reduce motion" preference by killing the heavy
+   animations. The game canvas still runs (it's the actual game), but
+   decorative motion is suppressed. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-bob,
+  .animate-pulse-glow,
+  .animate-spin-slow,
+  .shimmer,
+  .animate-float-up {
+    animation: none !important;
+  }
+}
+
+/* ---------- Mobile enhancements ----------
+   Touch-specific rules that only apply on coarse pointers (touch devices).
+   - Disable double-tap-to-zoom delay (already handled by viewport meta,
+     this is a belt-and-suspenders).
+   - Larger default tap targets.
+   - Prevent the "pull to refresh" gesture from interfering with scroll
+     inside bottom sheets.
+   - Prevent text selection callout on long-press for game UI chrome
+     (input fields and chat still allow selection). */
+@media (pointer: coarse) {
+  button,
+  [role="button"],
+  [role="switch"] {
+    touch-action: manipulation;
+  }
+  .no-callout {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .sheet-scroll {
+    /* Allow vertical scrolling inside the sheet without the browser
+       interpreting it as pull-to-refresh. */
+    overscroll-behavior: contain;
+  }
+}
+
+/* Safe-area helpers. The viewport meta has viewport-fit=cover so these
+   env() values are populated on notched devices. */
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.safe-x {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Hide the scrollbar on the horizontal history strip but keep it
+   scrollable — looks cleaner on mobile. */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Larger tap target baseline on mobile (44px is Apple's minimum). */
+@media (max-width: 1023px) {
+  .tap-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
