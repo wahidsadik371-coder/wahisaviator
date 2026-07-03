@@ -663,7 +663,7 @@ export const useGameStore = create<GameStore>()(
 
         // Phase 4: Update strategy state if active and bet was lost.
         // BUG FIX: Previously read `get().activeBet` here, but the bet was
-        // already cleared (set to null) at line 621 above. That made
+        // already cleared (set to null) earlier in this handler. That made
         // `ab2?.amount ?? 0` always evaluate to 0, so every strategy loss
         // was recorded as 0 coins lost — breaking Martingale/Fibonacci
         // progression and the stopOnLoss safety check.
