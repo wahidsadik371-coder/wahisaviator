@@ -661,33 +661,39 @@ export const useGameStore = create<GameStore>()(
           replayData: [replay, ...s.replayData].slice(0, 20),
         }));
 
-        // Phase 4: Update strategy state if active and bet was lost
+        // Phase 4: Update strategy state if active and bet was lost.
+        // BUG FIX: Previously read `get().activeBet` here, but the bet was
+        // already cleared (set to null) at line 621 above. That made
+        // `ab2?.amount ?? 0` always evaluate to 0, so every strategy loss
+        // was recorded as 0 coins lost — breaking Martingale/Fibonacci
+        // progression and the stopOnLoss safety check.
+        // FIX: Use the `ab` variable captured at the START of onCrash,
+        // before the bet was cleared. This preserves the actual bet amount
+        // for strategy loss tracking.
         const strat = get().activeStrategy;
-        if (strat && get().strategyState) {
-          const ab2 = get().activeBet;
-          if (!ab2 || ab2.status === "lost") {
-            const newState = nextBetAfterLoss(strat, get().strategyState!);
-            set({
-              strategyState: {
-                ...newState,
-                totalLoss: newState.totalLoss + (ab2?.amount ?? 0),
-                history: [...newState.history, { bet: ab2?.amount ?? 0, won: false, amount: 0 }].slice(-50),
-              },
+        if (strat && get().strategyState && ab && ab.roundId === snap.roundId && ab.status === "active") {
+          const lostAmount = ab.amount;
+          const newState = nextBetAfterLoss(strat, get().strategyState!);
+          set({
+            strategyState: {
+              ...newState,
+              totalLoss: newState.totalLoss + lostAmount,
+              history: [...newState.history, { bet: lostAmount, won: false, amount: 0 }].slice(-50),
+            },
+          });
+          const stop = shouldStop(strat, get().strategyState!);
+          if (stop.stop) {
+            get().pushToast({
+              kind: "info",
+              title: "Strategy stopped",
+              subtitle: stop.reason,
+              icon: "🛑",
             });
-            const stop = shouldStop(strat, get().strategyState!);
-            if (stop.stop) {
-              get().pushToast({
-                kind: "info",
-                title: "Strategy stopped",
-                subtitle: stop.reason,
-                icon: "🛑",
-              });
-              set({ activeStrategy: null, strategyState: null });
-            } else {
-              set((s) => ({
-                betConfig: { ...s.betConfig, amount: clampBet(get().strategyState!.currentAmount) },
-              }));
-            }
+            set({ activeStrategy: null, strategyState: null });
+          } else {
+            set((s) => ({
+              betConfig: { ...s.betConfig, amount: clampBet(get().strategyState!.currentAmount) },
+            }));
           }
         }
 
