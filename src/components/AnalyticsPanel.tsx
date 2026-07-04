@@ -9,7 +9,7 @@ import { Icon } from "./icons";
 function InsightCard({ label, value, accent }: { label: string; value: string; accent?: string }) {
   return (
     <div className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
-      <div className="text-[10px] font-semibold uppercase tracking-wider text-white/40">{label}</div>
+      <div className="text-xs font-semibold uppercase tracking-wider text-white/40">{label}</div>
       <div className={`mt-1 font-mono text-base font-bold ${accent ?? "text-white"}`}>{value}</div>
     </div>
   );
@@ -37,8 +37,8 @@ export function AnalyticsPanel() {
         <div className="flex items-center gap-2">
           <span className="text-2xl">{icon}</span>
           <div>
-            <div className="text-[10px] uppercase text-white/40">Level {progress.currentLevel}</div>
-            <div className="font-display text-lg font-bold text-white">{title}</div>
+            <div className="text-xs uppercase text-white/40">Level {progress.currentLevel}</div>
+            <div className="font-sans font-bold text-lg font-bold text-white">{title}</div>
           </div>
         </div>
         <div className="mt-2 h-2 overflow-hidden rounded-full bg-black/30">
@@ -47,7 +47,7 @@ export function AnalyticsPanel() {
             style={{ width: `${progress.progress * 100}%` }}
           />
         </div>
-        <div className="mt-1 text-right text-[10px] font-mono text-white/40">
+        <div className="mt-1 text-right text-xs font-mono text-white/40">
           {progress.currentLevelXP} / {progress.nextLevelXP} XP
         </div>
       </div>
@@ -106,7 +106,7 @@ export function AnalyticsPanel() {
           <Icon name="sparkles" className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
           <div>
             <div className="text-xs font-bold text-amber-200">Recommendation</div>
-            <div className="mt-0.5 text-[11px] text-white/70">{insights.recommendation}</div>
+            <div className="mt-0.5 text-xs text-white/70">{insights.recommendation}</div>
           </div>
         </div>
       </div>

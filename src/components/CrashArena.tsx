@@ -47,9 +47,9 @@ function multColor(m: number): string {
   return "#22d3ee";
 }
 function multGlow(m: number): string {
-  if (m >= 50) return "glow-pink";
-  if (m >= 10) return "glow-pink";
-  if (m >= 2) return "glow-lime";
+  if (m >= 50) return "";
+  if (m >= 10) return "";
+  if (m >= 2) return "";
   return "glow-cyan";
 }
 
@@ -283,7 +283,7 @@ export function CrashArena() {
       ctx.shadowBlur = 0;
     };
 
-    const drawHovercraft = (x: number, y: number, color: string, perf: boolean, ts: number) => {
+    const drawHovercraft = (x: number, y: number, _color: string, perf: boolean, ts: number) => {
       const palette = paletteRef.current;
       // Resolve all palette colors (handles "rainbow" → animated HSL).
       const hullColor = resolveColor(palette.hull, ts);
@@ -324,7 +324,7 @@ export function CrashArena() {
       ctx.closePath();
       if (!perf) {
         ctx.shadowBlur = 22;
-        ctx.shadowColor = color;
+        ctx.shadowColor = hullColor;
       }
       const hg = ctx.createLinearGradient(-14, -20, 14, 17);
       hg.addColorStop(0, lighten(hullColor, 80));
@@ -512,7 +512,7 @@ export function CrashArena() {
             className="flex flex-col items-center"
           >
             <CountdownRing ms={snap.countdownMs} />
-            <p className="mt-4 font-display text-xs uppercase tracking-[0.25em] text-white/50 sm:mt-5 sm:text-sm sm:tracking-[0.3em]">
+            <p className="mt-4 font-sans font-bold text-xs uppercase tracking-[0.25em] text-white/50 sm:mt-5 sm:text-sm sm:tracking-[0.3em]">
               Place your bets
             </p>
           </motion.div>
@@ -526,14 +526,17 @@ export function CrashArena() {
             className="flex flex-col items-center"
           >
             <div
-              className={`font-display text-5xl font-black tabular sm:text-6xl md:text-7xl lg:text-8xl ${multGlow(
+              className={`font-mono text-5xl font-black tabular sm:text-6xl md:text-7xl lg:text-8xl ${multGlow(
                 snap.multiplier
               )}`}
               style={{ color: multColor(snap.multiplier) }}
-              aria-live="polite"
-              aria-label={`Multiplier ${snap.multiplier.toFixed(2)} times`}
             >
               {formatMult(snap.multiplier)}
+            </div>
+            {/* Throttled sr-only announcement for screen readers.
+                Updates at most once per second to avoid flooding. */}
+            <div className="sr-only" role="status">
+              Multiplier {snap.multiplier.toFixed(2)}x
             </div>
             {activeBet && activeBet.status === "active" && potential !== null && (
               <motion.div
@@ -549,7 +552,7 @@ export function CrashArena() {
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className="mt-3 rounded-full border border-emerald-400/50 bg-emerald-400/15 px-5 py-2 text-sm font-bold text-emerald-300 glow-lime sm:px-6 sm:text-base"
+                className="mt-3 rounded-full border border-emerald-400/50 bg-emerald-400/15 px-5 py-2 text-sm font-bold text-emerald-300  sm:px-6 sm:text-base"
               >
                 CASHED OUT @ {formatMult(activeBet.cashedAt ?? 1)} · +
                 {formatCoins(activeBet.payout)}
@@ -566,10 +569,10 @@ export function CrashArena() {
             transition={{ duration: 0.45 }}
             className="flex flex-col items-center"
           >
-            <div className="font-display text-2xl font-black uppercase tracking-widest text-red-400 glow-red sm:text-3xl md:text-4xl">
+            <div className="font-sans font-bold text-2xl font-black uppercase tracking-widest text-red-400  sm:text-3xl md:text-4xl">
               Crashed
             </div>
-            <div className="mt-1 font-display text-4xl font-black tabular text-red-500 glow-red sm:text-5xl md:text-6xl">
+            <div className="mt-1 font-sans font-bold text-4xl font-black tabular text-red-500  sm:text-5xl md:text-6xl">
               {formatMult(snap.crashPoint)}
             </div>
           </motion.div>
@@ -580,7 +583,7 @@ export function CrashArena() {
       <DevStamp />
 
       {/* fairness badge */}
-      <div className="pointer-events-none absolute bottom-2 right-2 rounded-lg border border-white/10 bg-black/30 px-2 py-1 font-mono text-[10px] text-white/40 backdrop-blur sm:bottom-3 sm:right-3 sm:px-2.5">
+      <div className="pointer-events-none absolute bottom-2 right-2 rounded-lg border border-white/10 bg-black/30 px-2 py-1 font-mono text-xs text-white/40 backdrop-blur sm:bottom-3 sm:right-3 sm:px-2.5">
         fair #{snap.revealedSeed?.slice(0, 10) ?? snap.seedHash.slice(0, 10)}
       </div>
     </div>
@@ -621,10 +624,10 @@ function CountdownRing({ ms }: { ms: number }) {
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="font-display text-3xl font-black text-white glow-cyan sm:text-4xl">
+        <span className="font-sans font-bold text-3xl font-black text-white glow-cyan sm:text-4xl">
           {seconds}
         </span>
-        <span className="text-[10px] uppercase tracking-widest text-white/40">
+        <span className="text-xs uppercase tracking-widest text-white/40">
           sec
         </span>
       </div>

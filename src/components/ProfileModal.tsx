@@ -38,7 +38,7 @@ export function ProfileModal({ open, onClose }: { open: boolean; onClose: () => 
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-center justify-between">
-          <h2 id="profile-title" className="font-display text-lg font-bold text-white">
+          <h2 id="profile-title" className="font-sans font-bold text-lg font-bold text-white">
             Player Profile
           </h2>
           <button
@@ -53,7 +53,7 @@ export function ProfileModal({ open, onClose }: { open: boolean; onClose: () => 
         <div className="space-y-3">
           {/* Display name */}
           <div>
-            <label htmlFor="display-name" className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-white/40">
+            <label htmlFor="display-name" className="mb-1 block text-xs font-semibold uppercase tracking-wider text-white/40">
               Display Name
             </label>
             <input
@@ -71,11 +71,11 @@ export function ProfileModal({ open, onClose }: { open: boolean; onClose: () => 
             <div className="flex items-center gap-2">
               <span className="text-3xl">{icon}</span>
               <div className="flex-1">
-                <div className="text-[10px] uppercase text-white/40">Level {progress.currentLevel}</div>
-                <div className="font-display text-lg font-bold text-white">{title}</div>
+                <div className="text-xs uppercase text-white/40">Level {progress.currentLevel}</div>
+                <div className="font-sans font-bold text-lg font-bold text-white">{title}</div>
               </div>
               <div className="text-right">
-                <div className="text-[10px] text-white/40">Total XP</div>
+                <div className="text-xs text-white/40">Total XP</div>
                 <div className="font-mono text-sm font-bold text-amber-300">{formatCoins(totalXP)}</div>
               </div>
             </div>
@@ -90,27 +90,27 @@ export function ProfileModal({ open, onClose }: { open: boolean; onClose: () => 
           {/* Stats summary */}
           <div className="grid grid-cols-3 gap-2 text-center">
             <div className="rounded-xl border border-white/10 bg-white/[0.03] p-2">
-              <div className="text-[9px] uppercase text-white/40">Rounds</div>
+              <div className="text-xs uppercase text-white/40">Rounds</div>
               <div className="font-mono text-sm font-bold text-white">{stats.roundsPlayed}</div>
             </div>
             <div className="rounded-xl border border-white/10 bg-white/[0.03] p-2">
-              <div className="text-[9px] uppercase text-white/40">Wins</div>
+              <div className="text-xs uppercase text-white/40">Wins</div>
               <div className="font-mono text-sm font-bold text-emerald-300">{stats.wins}</div>
             </div>
             <div className="rounded-xl border border-white/10 bg-white/[0.03] p-2">
-              <div className="text-[9px] uppercase text-white/40">Best</div>
+              <div className="text-xs uppercase text-white/40">Best</div>
               <div className="font-mono text-sm font-bold text-cyan-300">{formatMult(stats.bestMultiplier)}</div>
             </div>
           </div>
 
           {/* Pinned achievements */}
           <div>
-            <div className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-white/40">
+            <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-white/40">
               Pinned achievements ({achievements.length}/{ACHIEVEMENTS.length})
             </div>
             <div className="flex gap-2">
               {pinnedAchievements.length === 0 && (
-                <div className="text-[11px] text-white/30">No achievements yet — play to unlock!</div>
+                <div className="text-xs text-white/30">No achievements yet — play to unlock!</div>
               )}
               {pinnedAchievements.map((id) => {
                 const a = ACHIEVEMENTS.find((x) => x.id === id);
@@ -118,7 +118,7 @@ export function ProfileModal({ open, onClose }: { open: boolean; onClose: () => 
                 return (
                   <div key={id} className="flex-1 rounded-lg border border-amber-400/30 bg-amber-400/5 p-2 text-center">
                     <div className="text-xl">{a.icon}</div>
-                    <div className="mt-0.5 truncate text-[9px] font-bold text-amber-300">{a.name}</div>
+                    <div className="mt-0.5 truncate text-xs font-bold text-amber-300">{a.name}</div>
                   </div>
                 );
               })}
@@ -127,7 +127,7 @@ export function ProfileModal({ open, onClose }: { open: boolean; onClose: () => 
 
           {/* Active cosmetics */}
           <div>
-            <div className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-white/40">
+            <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-white/40">
               Active cosmetic
             </div>
             <div className="rounded-lg border border-white/10 bg-white/[0.03] p-2 text-xs">

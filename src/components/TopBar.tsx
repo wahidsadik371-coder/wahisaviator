@@ -28,14 +28,14 @@ export function TopBar({ onOpenSettings }: { onOpenSettings: () => void }) {
     <header className="safe-top safe-x sticky top-0 z-30 border-b border-white/10 bg-[#070a18]/85 backdrop-blur-xl">
       {/* ===== MOBILE: single compact row ===== */}
       <div className="flex items-center gap-1.5 px-2.5 py-1.5 sm:hidden">
-        <NovaLogo className="h-7 w-7 shrink-0 drop-glow-cyan animate-bob" />
+        <NovaLogo className="h-7 w-7 shrink-0  " />
         <div className="min-w-0 flex-1 leading-none">
-          <div className="truncate font-display text-sm font-black tracking-wide text-white">
+          <div className="truncate font-sans font-bold text-sm font-black tracking-wide text-white">
             WAHID'S<span className="text-cyan-400"> AVIATOR</span>
           </div>
           {/* Compact balance row */}
           <div className="mt-0.5 flex items-center gap-1">
-            <span className="text-[10px]" aria-hidden="true">🪙</span>
+            <span className="text-xs" aria-hidden="true">🪙</span>
             <span className="font-mono text-xs font-bold tabular text-white glow-cyan">
               {formatCoins(animated)}
             </span>
@@ -49,7 +49,7 @@ export function TopBar({ onOpenSettings }: { onOpenSettings: () => void }) {
           aria-disabled={!dailyAvailable}
           className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg border transition ${
             dailyAvailable
-              ? "border-fuchsia-400/50 bg-fuchsia-400/10 text-fuchsia-300 animate-pulse-glow"
+              ? "border-fuchsia-400/50 bg-fuchsia-400/10 text-fuchsia-300 "
               : "border-white/10 bg-white/5 text-white/40"
           }`}
         >
@@ -72,10 +72,10 @@ export function TopBar({ onOpenSettings }: { onOpenSettings: () => void }) {
         <button
           onClick={addFreeCoins}
           aria-label={`Claim ${formatCoins(GAME.FREE_COINS_AMOUNT)} free coins`}
-          className="flex shrink-0 items-center gap-1 overflow-hidden rounded-lg bg-gradient-to-br from-lime-300 to-emerald-500 px-2 py-2 font-bold text-emerald-950 shadow-lg shadow-emerald-500/30 transition hover:from-lime-200 hover:to-emerald-400 active:scale-95 animate-pulse-glow focus-visible:outline-cyan-400"
+          className="flex shrink-0 items-center gap-1 overflow-hidden rounded-lg bg-gradient-to-br from-lime-300 to-emerald-500 px-2 py-2 font-bold text-emerald-950 shadow-lg shadow-emerald-500/30 transition hover:from-lime-200 hover:to-emerald-400 active:scale-95  focus-visible:outline-cyan-400"
         >
           <Icon name="sparkles" className="h-4 w-4" />
-          <span className="font-display text-xs">+{formatCoins(GAME.FREE_COINS_AMOUNT)}</span>
+          <span className="font-sans font-bold text-xs">+{formatCoins(GAME.FREE_COINS_AMOUNT)}</span>
         </button>
       </div>
 
@@ -84,12 +84,12 @@ export function TopBar({ onOpenSettings }: { onOpenSettings: () => void }) {
         {/* Row 1: brand + settings */}
         <div className="flex items-center gap-2">
           <div className="flex min-w-0 items-center gap-2">
-            <NovaLogo className="h-9 w-9 shrink-0 drop-glow-cyan animate-bob" />
+            <NovaLogo className="h-9 w-9 shrink-0  " />
             <div className="min-w-0 leading-none">
-              <div className="truncate font-display text-lg font-black tracking-wide text-white">
+              <div className="truncate font-sans font-bold text-lg font-black tracking-wide text-white">
                 WAHID'S<span className="text-cyan-400"> AVIATOR</span>
               </div>
-              <div className="hidden text-[10px] font-semibold uppercase tracking-[0.25em] text-white/35 sm:block">
+              <div className="hidden text-xs font-semibold uppercase tracking-[0.25em] text-white/35 sm:block">
                 by Wahid Sadik · Demo Play Money
               </div>
             </div>
@@ -114,7 +114,7 @@ export function TopBar({ onOpenSettings }: { onOpenSettings: () => void }) {
               aria-disabled={!dailyAvailable}
               className={`tap-target relative grid h-11 w-11 place-items-center rounded-xl border transition focus-visible:outline-cyan-400 ${
                 dailyAvailable
-                  ? "border-fuchsia-400/50 bg-fuchsia-400/10 text-fuchsia-300 animate-pulse-glow"
+                  ? "border-fuchsia-400/50 bg-fuchsia-400/10 text-fuchsia-300 "
                   : "border-white/10 bg-white/5 text-white/50 hover:bg-white/10"
               }`}
             >
@@ -147,7 +147,7 @@ export function TopBar({ onOpenSettings }: { onOpenSettings: () => void }) {
               <div className="font-mono text-base font-bold tabular text-white glow-cyan sm:text-lg">
                 {formatCoins(animated)}
               </div>
-              <div className="text-[9px] font-semibold uppercase tracking-widest text-cyan-300/70">
+              <div className="text-xs font-semibold uppercase tracking-widest text-cyan-300/70">
                 Coins
               </div>
             </div>
@@ -156,14 +156,13 @@ export function TopBar({ onOpenSettings }: { onOpenSettings: () => void }) {
           <button
             onClick={addFreeCoins}
             aria-label={`Claim ${formatCoins(GAME.FREE_COINS_AMOUNT)} free coins`}
-            className="tap-target relative flex shrink-0 items-center gap-1.5 overflow-hidden rounded-xl bg-gradient-to-br from-lime-300 to-emerald-500 px-4 py-2.5 font-bold text-emerald-950 shadow-lg shadow-emerald-500/30 transition hover:from-lime-200 hover:to-emerald-400 active:scale-95 animate-pulse-glow focus-visible:outline-cyan-400"
+            className="tap-target relative flex shrink-0 items-center gap-1.5 overflow-hidden rounded-xl bg-gradient-to-br from-lime-300 to-emerald-500 px-4 py-2.5 font-bold text-emerald-950 shadow-lg shadow-emerald-500/30 transition hover:from-lime-200 hover:to-emerald-400 active:scale-95  focus-visible:outline-cyan-400"
           >
-            <span className="shimmer absolute inset-0" aria-hidden="true" />
             <Icon name="sparkles" className="relative h-5 w-5" />
-            <span className="relative font-display text-sm">
+            <span className="relative font-sans font-bold text-sm">
               +{formatCoins(GAME.FREE_COINS_AMOUNT)}
             </span>
-            <span className="relative hidden text-[10px] font-black uppercase tracking-wider opacity-80 sm:block">
+            <span className="relative hidden text-xs font-black uppercase tracking-wider opacity-80 sm:block">
               Free
             </span>
           </button>

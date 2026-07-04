@@ -4,7 +4,6 @@ import { useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
 
 import { useGameStore } from "@/store/useGameStore";
-import { sound } from "@/lib/sound";
 import { APP } from "@/lib/constants";
 import { Icon } from "./icons";
 
@@ -70,7 +69,6 @@ export function SettingsModal({
   const setVolume = useGameStore((s) => s.setVolume);
   const toggleAnimations = useGameStore((s) => s.toggleAnimations);
   const toggleParticles = useGameStore((s) => s.toggleParticles);
-  const togglePerformance = useGameStore((s) => s.togglePerformance);
   const resetProgress = useGameStore((s) => s.resetProgress);
   const [confirmReset, setConfirmReset] = useState(false);
 
@@ -91,7 +89,7 @@ export function SettingsModal({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-center justify-between">
-          <h2 id="settings-title" className="font-display text-lg font-bold text-white">
+          <h2 id="settings-title" className="font-sans font-bold text-lg font-bold text-white">
             Settings
           </h2>
           <button
@@ -144,20 +142,6 @@ export function SettingsModal({
             />
           </Row>
 
-          <Row
-            title="Performance mode"
-            desc="Reduce blur & particles for 60fps"
-          >
-            <Toggle
-              checked={settings.performanceMode}
-              ariaLabel="Toggle performance mode"
-              onChange={() => {
-                togglePerformance();
-                sound.play("click");
-              }}
-            />
-          </Row>
-
           <Row title="Reset progress" desc="Clear saved coins & stats">
             <button
               onClick={() => {
@@ -190,43 +174,26 @@ export function SettingsModal({
         {/* credits */}
         <div className="mt-3 overflow-hidden rounded-xl border border-cyan-400/20 bg-gradient-to-br from-cyan-500/10 to-violet-500/10 p-4">
           <div className="flex items-center gap-3">
-            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-cyan-400 to-violet-500 font-display text-lg font-black text-white shadow-lg shadow-cyan-500/30">
+            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-cyan-400 to-violet-500 font-sans font-bold text-lg font-black text-white shadow-lg shadow-cyan-500/30">
               WS
             </div>
             <div className="min-w-0 flex-1">
-              <div className="text-[10px] font-semibold uppercase tracking-widest text-cyan-300/70">
-                Developed by
+              <div className="text-xs font-semibold uppercase tracking-widest text-cyan-300/70">
+                Crafted by
               </div>
-              <div className="truncate font-display text-base font-bold text-white">
+              <div className="truncate font-sans text-base font-bold text-white">
                 {APP.DEVELOPER_HANDLE}
               </div>
             </div>
           </div>
-          <div className="mt-3 grid grid-cols-2 gap-1.5 text-[11px] text-white/55">
-            <Credit role="Game Engine" />
-            <Credit role="UI / UX Design" />
-            <Credit role="Animations" />
-            <Credit role="Sound Design" />
-            <Credit role="Artwork" />
-            <Credit role="Everything Else" />
+          <div className="mt-3 text-center text-xs text-white/50">
+            Designed, engineered, and illustrated by {APP.DEVELOPER}
           </div>
-          <div className="mt-3 text-center text-[10px] text-white/35">
-            © {APP.YEAR} {APP.NAME} · All credits to {APP.DEVELOPER}
+          <div className="mt-2 text-center text-xs text-white/35">
+            © {APP.YEAR} {APP.NAME}
           </div>
         </div>
       </motion.div>
-    </div>
-  );
-}
-
-function Credit({ role }: { role: string }) {
-  return (
-    <div className="flex items-center gap-1.5">
-      <Icon name="check" className="h-3 w-3 shrink-0 text-cyan-400" />
-      <span className="truncate">{role}</span>
-      <span className="ml-auto truncate font-semibold text-cyan-300/80">
-        W. Sadik
-      </span>
     </div>
   );
 }

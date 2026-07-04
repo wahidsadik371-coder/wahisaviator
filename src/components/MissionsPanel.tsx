@@ -70,19 +70,19 @@ export function MissionsPanel() {
                   <span className="text-xs font-bold text-white/90">{m.description}</span>
                   <DifficultyBadge difficulty={m.difficulty} />
                 </div>
-                <div className="mt-1 text-[10px] text-white/40">
+                <div className="mt-1 text-xs text-white/40">
                   Reward: <span className="font-mono text-amber-300">{formatCoins(m.reward)} coins</span>
                 </div>
               </div>
               {m.completed && !m.claimed && (
                 <button
                   onClick={() => claimMission(m.id)}
-                  className="tap-target rounded-lg bg-emerald-500 px-2.5 py-1 text-[11px] font-bold text-emerald-950 hover:bg-emerald-400"
+                  className="tap-target rounded-lg bg-emerald-500 px-2.5 py-1 text-xs font-bold text-emerald-950 hover:bg-emerald-400"
                 >
                   Claim
                 </button>
               )}
-              {m.claimed && <span className="text-[10px] text-white/30">Claimed ✓</span>}
+              {m.claimed && <span className="text-xs text-white/30">Claimed ✓</span>}
             </div>
             <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-black/30">
               <div
@@ -90,7 +90,7 @@ export function MissionsPanel() {
                 style={{ width: `${Math.min(100, (m.progress / m.target) * 100)}%` }}
               />
             </div>
-            <div className="mt-1 text-right text-[10px] font-mono text-white/40">
+            <div className="mt-1 text-right text-xs font-mono text-white/40">
               {Math.min(m.progress, m.target).toLocaleString()} / {m.target.toLocaleString()}
             </div>
           </motion.div>
@@ -107,7 +107,7 @@ function DifficultyBadge({ difficulty }: { difficulty: "easy" | "medium" | "hard
     hard: "bg-rose-400/20 text-rose-300",
   };
   return (
-    <span className={`rounded px-1 py-0.5 text-[8px] font-bold uppercase ${colors[difficulty]}`}>
+    <span className={`rounded px-1 py-0.5 text-xs font-bold uppercase ${colors[difficulty]}`}>
       {difficulty}
     </span>
   );

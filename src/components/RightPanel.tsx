@@ -49,7 +49,7 @@ export const TABS: { id: TabId; label: string; icon: IconName }[] = [
   { id: "tournaments", label: "Cup", icon: "trophy" },
   { id: "friends", label: "Friends", icon: "users" },
   { id: "analytics", label: "Analytics", icon: "chart" },
-  { id: "fairness", label: "Fair", icon: "check" },
+  { id: "fairness", label: "Algorithm", icon: "check" },
   { id: "replays", label: "Replays", icon: "play" },
 ];
 
@@ -57,7 +57,7 @@ export function RightPanel({ initialTab = "live" }: { initialTab?: TabId } = {})
   const [tab, setTab] = useState<TabId>(initialTab);
 
   return (
-    <div className="glass sheet-scroll flex h-full min-h-[420px] flex-col overflow-hidden rounded-2xl">
+    <div className="panel-solid sheet-scroll flex h-full min-h-[420px] flex-col overflow-hidden rounded-2xl">
       <div className="flex shrink-0 gap-1 border-b border-white/10 p-1.5">
         {TABS.map((t) => (
           <button
@@ -65,7 +65,7 @@ export function RightPanel({ initialTab = "live" }: { initialTab?: TabId } = {})
             onClick={() => setTab(t.id)}
             aria-label={`${t.label} tab`}
             aria-selected={tab === t.id}
-            className={`tap-target flex flex-1 flex-col items-center gap-1 rounded-xl px-1 py-2 text-[10px] font-semibold transition focus-visible:outline-cyan-400 ${
+            className={`tap-target flex flex-1 flex-col items-center gap-1 rounded-xl px-1 py-2 text-xs font-semibold transition focus-visible:outline-cyan-400 ${
               tab === t.id
                 ? "bg-white/10 text-cyan-300"
                 : "text-white/45 hover:bg-white/5 hover:text-white/70"
@@ -129,7 +129,7 @@ function Leaderboard() {
           className="flex items-center gap-3 rounded-xl border border-white/5 bg-white/[0.03] px-3 py-2"
         >
           <span
-            className={`w-5 text-center font-display text-sm font-bold ${
+            className={`w-5 text-center font-sans font-bold text-sm font-bold ${
               i === 0
                 ? "text-amber-300"
                 : i === 1
@@ -280,7 +280,7 @@ function StatCard({
 }) {
   return (
     <div className="rounded-xl border border-white/10 bg-white/[0.03] p-3">
-      <div className="text-[10px] font-semibold uppercase tracking-wider text-white/40">
+      <div className="text-xs font-semibold uppercase tracking-wider text-white/40">
         {label}
       </div>
       <div className={`mt-1 font-mono text-base font-bold ${accent ?? "text-white"}`}>
@@ -382,7 +382,7 @@ function Achievements() {
   return (
     <div className="space-y-3">
       <div className="rounded-xl border border-amber-400/20 bg-amber-400/5 px-3 py-2 text-center">
-        <span className="font-display text-lg font-bold text-amber-300">
+        <span className="font-sans font-bold text-lg font-bold text-amber-300">
           {count}
         </span>
         <span className="text-white/50"> / {ACHIEVEMENTS.length} unlocked</span>
@@ -401,7 +401,7 @@ function Achievements() {
             >
               <div className="text-2xl">{got ? a.icon : "🔒"}</div>
               <div className="mt-1 text-xs font-bold text-white/90">{a.name}</div>
-              <div className="text-[10px] leading-tight text-white/50">
+              <div className="text-xs leading-tight text-white/50">
                 {a.desc}
               </div>
             </div>
@@ -444,7 +444,7 @@ function BetHistory() {
             <div className="font-mono text-xs text-white/50">
               {formatCoins(b.amount)} {b.multiplier ? "@ " + formatMult(b.multiplier) : "· crashed"}
             </div>
-            <div className="text-[10px] text-white/30">{timeAgo(b.ts)}</div>
+            <div className="text-xs text-white/30">{timeAgo(b.ts)}</div>
           </div>
           <span
             className={`font-mono text-sm font-bold ${
@@ -455,7 +455,7 @@ function BetHistory() {
           </span>
         </div>
       ))}
-      <p className="pt-1 text-center text-[10px] text-white/25">
+      <p className="pt-1 text-center text-xs text-white/25">
         Showing last {GAME.BET_HISTORY_LIMIT} bets
       </p>
     </div>

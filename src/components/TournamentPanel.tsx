@@ -22,7 +22,7 @@ export function TournamentPanel() {
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`tap-target flex-1 rounded-xl px-2 py-1.5 text-[10px] font-bold uppercase transition ${
+            className={`tap-target flex-1 rounded-xl px-2 py-1.5 text-xs font-bold uppercase transition ${
               filter === f ? "bg-cyan-400/20 text-cyan-300" : "bg-white/5 text-white/50"
             }`}
           >
@@ -54,7 +54,7 @@ export function TournamentPanel() {
             <div className="flex items-start justify-between">
               <div>
                 <div className="text-sm font-bold text-white/90">{t.name}</div>
-                <div className="mt-0.5 flex items-center gap-2 text-[10px]">
+                <div className="mt-0.5 flex items-center gap-2 text-xs">
                   <span className={`rounded px-1.5 py-0.5 font-bold uppercase ${
                     t.status === "active" ? "bg-emerald-400/20 text-emerald-300" : "bg-amber-400/20 text-amber-300"
                   }`}>
@@ -66,12 +66,12 @@ export function TournamentPanel() {
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-[10px] text-white/40">Prize pool</div>
+                <div className="text-xs text-white/40">Prize pool</div>
                 <div className="font-mono text-sm font-bold text-amber-300">{formatCoins(t.prizePool)}</div>
               </div>
             </div>
 
-            <div className="mt-2 grid grid-cols-3 gap-2 text-center text-[10px]">
+            <div className="mt-2 grid grid-cols-3 gap-2 text-center text-xs">
               <div className="rounded-lg bg-black/20 p-1.5">
                 <div className="text-white/40">Entry</div>
                 <div className="font-mono text-white">{formatCoins(t.entryFee)}</div>
@@ -87,10 +87,10 @@ export function TournamentPanel() {
             </div>
 
             <div className="mt-2">
-              <div className="mb-1 text-[10px] font-semibold uppercase text-white/40">Top 5</div>
+              <div className="mb-1 text-xs font-semibold uppercase text-white/40">Top 5</div>
               <div className="space-y-0.5">
                 {t.leaderboard.slice(0, 5).map((p, i) => (
-                  <div key={i} className="flex items-center gap-2 text-[11px]">
+                  <div key={i} className="flex items-center gap-2 text-xs">
                     <span className={`w-4 text-center font-bold ${i === 0 ? "text-amber-300" : i === 1 ? "text-slate-300" : i === 2 ? "text-orange-400" : "text-white/40"}`}>
                       {i + 1}
                     </span>
@@ -103,7 +103,7 @@ export function TournamentPanel() {
             </div>
 
             {t.status === "upcoming" && (
-              <button className="tap-target mt-2 w-full rounded-lg bg-cyan-500/20 py-1.5 text-[11px] font-bold text-cyan-300 hover:bg-cyan-500/30">
+              <button className="tap-target mt-2 w-full rounded-lg bg-cyan-500/20 py-1.5 text-xs font-bold text-cyan-300 hover:bg-cyan-500/30">
                 Register (Coming soon)
               </button>
             )}

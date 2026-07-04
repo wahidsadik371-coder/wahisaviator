@@ -1,20 +1,13 @@
-// Keyboard shortcuts handler + Konami code easter egg.
-// Mounts once at app root.
+// Keyboard shortcuts handler.
+// Mounts once at app root. Useful shortcuts only — no decorative easter eggs.
 
 import { useEffect } from "react";
 
 import { useGameStore } from "@/store/useGameStore";
 import { sound } from "@/lib/sound";
 
-const KONAMI = [
-  "ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown",
-  "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight",
-  "b", "a",
-];
-
 export function KeyboardShortcuts() {
   useEffect(() => {
-    let konamiIdx = 0;
     const onKey = (e: KeyboardEvent) => {
       // Don't intercept when typing in inputs
       const tag = (e.target as HTMLElement)?.tagName;
@@ -22,19 +15,6 @@ export function KeyboardShortcuts() {
 
       const store = useGameStore.getState();
 
-      // Konami code
-      const expected = KONAMI[konamiIdx];
-      if (e.key === expected || e.key.toLowerCase() === expected) {
-        konamiIdx++;
-        if (konamiIdx === KONAMI.length) {
-          store.setKonami(true);
-          konamiIdx = 0;
-        }
-      } else {
-        konamiIdx = e.key === KONAMI[0] ? 1 : 0;
-      }
-
-      // Shortcuts
       switch (e.key.toLowerCase()) {
         case "b":
           if (!e.ctrlKey && !e.metaKey) {
@@ -49,9 +29,6 @@ export function KeyboardShortcuts() {
           break;
         case "s":
           if (e.ctrlKey || e.metaKey) return; // don't intercept Ctrl+S
-          break;
-        case "h":
-          // Toggle history visibility (could be a setting)
           break;
         case " ":
           // Space: place bet or cashout

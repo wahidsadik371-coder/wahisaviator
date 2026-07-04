@@ -43,12 +43,12 @@ export function TutorialOverlay() {
           className="glass-strong w-full max-w-md rounded-3xl p-6"
         >
           <div className="mb-3 flex items-center justify-between">
-            <div className="text-[10px] font-bold uppercase tracking-widest text-cyan-300">
+            <div className="text-xs font-bold uppercase tracking-widest text-cyan-300">
               Tutorial · Step {step + 1} / {TUTORIAL_STEPS.length}
             </div>
             <button
               onClick={() => setDismissed(true)}
-              className="text-[10px] text-white/40 hover:text-white/70"
+              className="text-xs text-white/40 hover:text-white/70"
             >
               Skip
             </button>
@@ -61,7 +61,7 @@ export function TutorialOverlay() {
             />
           </div>
 
-          <h2 id="tutorial-title" className="font-display text-xl font-bold text-white">
+          <h2 id="tutorial-title" className="font-sans font-bold text-xl font-bold text-white">
             {current.title}
           </h2>
           <p className="mt-2 text-sm leading-relaxed text-white/70">{current.description}</p>
@@ -79,7 +79,7 @@ export function TutorialOverlay() {
               onClick={next}
               className="tap-target flex-1 rounded-xl bg-gradient-to-br from-cyan-400 to-violet-500 py-2.5 text-sm font-bold text-white shadow-lg hover:opacity-90"
             >
-              {isLast ? "Finish (+5K coins)" : "Next"}
+              {isLast ? "Start Playing" : "Next"}
             </button>
           </div>
         </motion.div>

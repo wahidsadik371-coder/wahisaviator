@@ -52,7 +52,7 @@ export function EmotePicker({
 
         {!query && recent.length > 0 && (
           <div className="mb-2">
-            <div className="mb-1 text-[9px] font-semibold uppercase text-white/40">Recent</div>
+            <div className="mb-1 text-xs font-semibold uppercase text-white/40">Recent</div>
             <div className="flex flex-wrap gap-1">
               {recent.map((e) => (
                 <button
@@ -74,7 +74,7 @@ export function EmotePicker({
               <button
                 key={c}
                 onClick={() => setCategory(c)}
-                className={`flex-1 rounded-lg px-2 py-1 text-[10px] font-bold capitalize transition ${
+                className={`flex-1 rounded-lg px-2 py-1 text-xs font-bold capitalize transition ${
                   category === c ? "bg-cyan-400/20 text-cyan-300" : "bg-white/5 text-white/50"
                 }`}
               >

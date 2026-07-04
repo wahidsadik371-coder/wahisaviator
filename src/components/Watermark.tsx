@@ -37,7 +37,7 @@ export function WatermarkOverlay() {
 export function MadeByBadge({ className = "" }: { className?: string }) {
   return (
     <div
-      className={`inline-flex items-center gap-1.5 rounded-full border border-cyan-400/30 bg-cyan-400/5 px-2.5 py-1 text-[10px] font-semibold tracking-wide text-cyan-200/80 ${className}`}
+      className={`inline-flex items-center gap-1.5 rounded-full border border-cyan-400/30 bg-cyan-400/5 px-2.5 py-1 text-xs font-semibold tracking-wide text-cyan-200/80 ${className}`}
     >
       <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
       Made by {APP.DEVELOPER}
@@ -49,10 +49,10 @@ export function MadeByBadge({ className = "" }: { className?: string }) {
 export function DevStamp() {
   return (
     <div className="pointer-events-none absolute left-3 top-3 flex flex-col gap-1">
-      <span className="font-display text-[10px] font-bold uppercase tracking-[0.25em] text-white/25">
+      <span className="font-sans font-bold text-xs font-bold uppercase tracking-[0.25em] text-white/25">
         {APP.NAME}
       </span>
-      <span className="text-[9px] font-medium uppercase tracking-widest text-white/15">
+      <span className="text-xs font-medium uppercase tracking-widest text-white/15">
         © {APP.YEAR} · {APP.DEVELOPER}
       </span>
     </div>

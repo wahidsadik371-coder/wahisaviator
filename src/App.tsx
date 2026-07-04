@@ -22,7 +22,7 @@ import { installDevTools } from "@/utils/devTools";
 import { monitoring } from "@/lib/monitoring";
 
 import { Background } from "@/components/Background";
-import { WatermarkOverlay, MadeByBadge } from "@/components/Watermark";
+import { MadeByBadge } from "@/components/Watermark";
 import { TopBar } from "@/components/TopBar";
 import { HistoryStrip } from "@/components/HistoryStrip";
 import { CrashArena } from "@/components/CrashArena";
@@ -113,31 +113,24 @@ export default function App() {
           <DesktopLayout />
         )}
 
-        <footer className="mx-auto mt-4 max-w-3xl space-y-3 text-center lg:mt-6">
+        <footer className="mx-auto mt-4 max-w-3xl space-y-2 border-t border-white/10 pt-4 text-center lg:mt-6">
           <div className="flex flex-wrap items-center justify-center gap-3">
             <MadeByBadge />
-            <span className="font-display text-xs font-bold uppercase tracking-widest text-white/35">
+            <span className="font-sans text-xs font-bold uppercase tracking-widest text-white/35">
               {APP.NAME}
             </span>
           </div>
-          <p className="text-xs leading-relaxed text-white/30">
-            <strong className="font-semibold text-white/45">{APP.NAME}</strong>{" "}
-            is a free entertainment game using virtual demo coins only. There is
-            no real money, no purchases, and no withdrawals of any kind. All
-            multipliers and outcomes are simulated locally using a provably-fair
-            algorithm.
+          <p className="text-xs leading-relaxed text-white/50">
+            Virtual coins only — no real money, purchases, or withdrawals. Provably-fair local simulation.
           </p>
-          <p className="text-[11px] text-white/25">
-            © {APP.YEAR} {APP.NAME}. Designed, engineered & owned by{" "}
+          <p className="text-xs text-white/30">
+            © {APP.YEAR} {APP.NAME}. Designed & built by{" "}
             <span className="font-semibold text-cyan-300/70">
               {APP.DEVELOPER}
             </span>
-            . All rights reserved.
           </p>
         </footer>
       </main>
-
-      <WatermarkOverlay />
 
       <ErrorBoundary fallback={null}>
         <Confetti />
@@ -268,7 +261,7 @@ function MobileLayout({
               onClick={() => setSheetTab(sheetTab === t.id ? null : t.id)}
               aria-label={`Open ${t.label} panel`}
               aria-pressed={sheetTab === t.id}
-              className={`flex min-w-0 flex-1 flex-col items-center gap-0.5 rounded-xl py-2 text-[10px] font-semibold transition focus-visible:outline-cyan-400 ${
+              className={`flex min-w-0 flex-1 flex-col items-center gap-0.5 rounded-xl py-2 text-xs font-semibold transition focus-visible:outline-cyan-400 ${
                 sheetTab === t.id
                   ? "bg-cyan-400/20 text-cyan-300"
                   : "text-white/55 hover:bg-white/5 hover:text-white/80"
@@ -282,9 +275,9 @@ function MobileLayout({
           <button
             onClick={() => setMoreOpen(true)}
             aria-label="Open more panels"
-            className="flex min-w-0 flex-1 flex-col items-center gap-0.5 rounded-xl py-2 text-[10px] font-semibold text-white/55 transition hover:bg-white/5 hover:text-white/80 focus-visible:outline-cyan-400"
+            className="flex min-w-0 flex-1 flex-col items-center gap-0.5 rounded-xl py-2 text-xs font-semibold text-white/55 transition hover:bg-white/5 hover:text-white/80 focus-visible:outline-cyan-400"
           >
-            <Icon name="sparkles" className="h-4 w-4" />
+            <Icon name="settings" className="h-4 w-4" />
             <span className="truncate">More</span>
           </button>
         </div>
@@ -358,7 +351,7 @@ function MobileLayout({
                         setSheetTab(t.id);
                         setMoreOpen(false);
                       }}
-                      className="flex flex-col items-center gap-1 rounded-xl border border-white/10 bg-white/[0.03] py-3 text-[10px] font-semibold text-white/70 transition hover:bg-white/10 hover:text-white focus-visible:outline-cyan-400"
+                      className="flex flex-col items-center gap-1 rounded-xl border border-white/10 bg-white/[0.03] py-3 text-xs font-semibold text-white/70 transition hover:bg-white/10 hover:text-white focus-visible:outline-cyan-400"
                     >
                       <Icon name={t.icon} className="h-5 w-5" />
                       <span className="truncate">{t.label}</span>
@@ -391,7 +384,7 @@ function CrashFallback({ label }: { label: string }) {
       className="grid min-h-[200px] place-items-center rounded-2xl border border-red-400/30 bg-red-500/10 p-6 text-center"
     >
       <div>
-        <div className="font-display text-sm font-bold uppercase tracking-widest text-red-300">
+        <div className="font-sans font-bold text-sm font-bold uppercase tracking-widest text-red-300">
           {label}
         </div>
         <p className="mt-1 text-xs text-white/50">

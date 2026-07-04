@@ -46,7 +46,7 @@ export function DebugOverlay() {
   const session = monitoring.getSession();
 
   return (
-    <div className="fixed bottom-4 right-4 z-[100] max-w-xs rounded-xl border border-cyan-400/30 bg-black/90 p-3 font-mono text-[10px] text-white/80 backdrop-blur">
+    <div className="fixed bottom-4 right-4 z-[100] max-w-xs rounded-xl border border-cyan-400/30 bg-black/90 p-3 font-mono text-xs text-white/80 backdrop-blur">
       <div className="mb-2 flex items-center justify-between">
         <span className="font-bold text-cyan-300">DEBUG</span>
         <button onClick={() => setOpen(false)} className="text-white/40 hover:text-white">×</button>

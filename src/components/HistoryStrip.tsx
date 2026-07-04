@@ -35,7 +35,7 @@ export function HistoryStrip() {
   const history = useGameStore((s) => s.history);
 
   return (
-    <div className="glass no-callout flex items-center gap-2 rounded-2xl p-2 lg:p-2.5">
+    <div className="panel-solid no-callout flex items-center gap-2 rounded-2xl p-2 lg:p-2.5">
       <span className="hidden shrink-0 px-1 text-xs font-semibold uppercase tracking-wider text-white/40 sm:block">
         Recent
       </span>
@@ -61,14 +61,14 @@ export function HistoryStrip() {
                   : `Crashed at ${formatMult(r.crashPoint)}`
               }
             >
-              {badge && <span className="text-[8px] leading-none opacity-60">{badge}</span>}
+              {badge && <span className="text-xs leading-none opacity-60">{badge}</span>}
               {formatMult(r.crashPoint)}
             </span>
           );
         })}
       </div>
       {history.length > 0 && (
-        <span className="shrink-0 rounded-full bg-white/5 px-1.5 py-0.5 text-[9px] font-bold text-white/40">
+        <span className="shrink-0 rounded-full bg-white/5 px-1.5 py-0.5 text-xs font-bold text-white/40">
           {history.length}
         </span>
       )}

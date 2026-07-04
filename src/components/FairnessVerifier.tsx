@@ -35,15 +35,15 @@ export function FairnessVerifier() {
           <Icon name="sparkles" className="h-3.5 w-3.5 text-cyan-300" />
           <span className="font-bold text-cyan-300">Provably Fair Flow</span>
         </div>
-        <ol className="list-decimal space-y-0.5 pl-4 text-[11px]">
+        <ol className="list-decimal space-y-0.5 pl-4 text-xs">
           <li>Before each round, a random <strong>server seed</strong> is generated.</li>
           <li>Its <strong>commitment hash</strong> is shown in the arena (bottom-right corner).</li>
           <li>After the crash, the seed is <strong>revealed</strong> in the history below.</li>
           <li>Re-enter the seed here to confirm the crash point matches.</li>
         </ol>
-        <p className="mt-2 text-[10px] text-amber-200/70">
-          ⚠️ Demo note: the seed is generated in your browser, not on a server.
-          A real site commits server-side so neither player nor house can cheat.
+        <p className="mt-2 text-xs text-amber-200/70">
+          This is a local simulation. Real crash games use server-side seeds
+          for trustless verification.
         </p>
       </div>
 
@@ -65,12 +65,12 @@ export function FairnessVerifier() {
       {seed && crash !== null && (
         <div className="space-y-2 rounded-xl border border-white/10 bg-white/[0.03] p-3">
           <div>
-            <div className="text-[10px] uppercase text-white/40">Commitment hash (shown pre-round)</div>
-            <div className="break-all font-mono text-[10px] text-cyan-300">{hash}</div>
+            <div className="text-xs uppercase text-white/40">Commitment hash (shown pre-round)</div>
+            <div className="break-all font-mono text-xs text-cyan-300">{hash}</div>
           </div>
           <div>
-            <div className="text-[10px] uppercase text-white/40">Computed crash point</div>
-            <div className="font-display text-2xl font-bold text-amber-300 glow-pink">{crash.toFixed(2)}x</div>
+            <div className="text-xs uppercase text-white/40">Computed crash point</div>
+            <div className="font-sans font-bold text-2xl font-bold text-amber-300 ">{crash.toFixed(2)}x</div>
           </div>
           <button
             onClick={() => setVerified(true)}
@@ -88,7 +88,7 @@ export function FairnessVerifier() {
         </div>
         <div className="space-y-1">
           {history.length === 0 && (
-            <div className="rounded-lg border border-white/5 bg-white/[0.02] p-2 text-center text-[11px] text-white/30">
+            <div className="rounded-lg border border-white/5 bg-white/[0.02] p-2 text-center text-xs text-white/30">
               No rounds yet. Play to see revealed seeds.
             </div>
           )}
@@ -102,7 +102,7 @@ export function FairnessVerifier() {
               }`}>
                 {formatMult(r.crashPoint)}
               </span>
-              <span className="text-[9px] text-white/30">{timeAgo(r.ts)}</span>
+              <span className="text-xs text-white/30">{timeAgo(r.ts)}</span>
               <button
                 onClick={() => {
                   // In a real implementation, the seed would be stored in the
@@ -110,7 +110,7 @@ export function FairnessVerifier() {
                   // fairness badge.
                   setSeed(`round-${r.id}`);
                 }}
-                className="ml-auto rounded bg-white/5 px-1.5 py-0.5 text-[9px] font-mono text-white/40 hover:bg-white/10"
+                className="ml-auto rounded bg-white/5 px-1.5 py-0.5 text-xs font-mono text-white/40 hover:bg-white/10"
                 title="Load this round's seed for verification"
               >
                 #{r.id}
@@ -121,16 +121,16 @@ export function FairnessVerifier() {
       </div>
 
       {/* Algorithm explanation */}
-      <div className="rounded-xl border border-white/10 bg-black/20 p-3 text-[11px] leading-relaxed text-white/50">
+      <div className="rounded-xl border border-white/10 bg-black/20 p-3 text-xs leading-relaxed text-white/50">
         <strong className="text-white/70">Algorithm (Bustabit-compatible):</strong>
-        <pre className="mt-1 overflow-x-auto rounded-lg bg-black/30 p-2 font-mono text-[10px] text-cyan-300">
+        <pre className="mt-1 overflow-x-auto rounded-lg bg-black/30 p-2 font-mono text-xs text-cyan-300">
 {`h = FNV-1a("crash:" + seed)
 if (h % 33 === 0) return 1.00x    // ~3% instant crash
 r = h / 2^32                       // [0, 1)
 crash = floor(0.99 / (1 - r) * 100) / 100
 return clamp(crash, 1.00, 1000)`}
         </pre>
-        <div className="mt-2 grid grid-cols-2 gap-1 text-[10px]">
+        <div className="mt-2 grid grid-cols-2 gap-1 text-xs">
           <div>P(crash = 1.00x): ~5%</div>
           <div>P(crash ≥ 2x): ~48%</div>
           <div>P(crash ≥ 10x): ~9.5%</div>

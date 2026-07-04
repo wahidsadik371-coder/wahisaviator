@@ -32,7 +32,7 @@ export function ReplayViewer() {
             </span>
             <div className="min-w-0 flex-1">
               <div className="font-mono text-xs text-white/70">Round #{r.roundId}</div>
-              <div className="text-[10px] text-white/30">{timeAgo(r.ts)} ago</div>
+              <div className="text-xs text-white/30">{timeAgo(r.ts)} ago</div>
             </div>
             <span className={`font-mono text-sm font-bold ${
               r.crashPoint >= 2 ? "text-emerald-300" : "text-rose-300"
@@ -48,10 +48,10 @@ export function ReplayViewer() {
                 exit={{ height: 0, opacity: 0 }}
                 className="overflow-hidden"
               >
-                <div className="mt-2 rounded-lg bg-black/20 p-2 text-[11px] text-white/60">
+                <div className="mt-2 rounded-lg bg-black/20 p-2 text-xs text-white/60">
                   <div>Crashed at: <span className="font-mono text-rose-300">{formatMult(r.crashPoint)}</span></div>
                   <div>Bets recorded: {r.bets.length}</div>
-                  <div className="mt-1 text-[10px] text-white/40">
+                  <div className="mt-1 text-xs text-white/40">
                     Full frame-by-frame replay coming in a future update.
                   </div>
                 </div>

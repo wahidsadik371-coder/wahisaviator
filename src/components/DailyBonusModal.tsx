@@ -51,17 +51,17 @@ export function DailyBonusModal() {
           >
             <div className="pointer-events-none absolute -top-20 left-1/2 h-48 w-48 -translate-x-1/2 rounded-full bg-fuchsia-500/30 blur-3xl" />
             <div className="relative">
-              <div className="mx-auto mb-3 grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br from-fuchsia-400 to-violet-600 text-3xl shadow-lg shadow-fuchsia-500/40 animate-bob">
+              <div className="mx-auto mb-3 grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br from-fuchsia-400 to-violet-600 text-3xl shadow-lg shadow-fuchsia-500/40 ">
                 <Icon name="gift" className="h-8 w-8 text-white" />
               </div>
-              <h2 id="daily-bonus-title" className="font-display text-xl font-black text-white">
-                Daily Bonus!
+              <h2 id="daily-bonus-title" className="font-sans font-bold text-xl font-black text-white">
+                Daily Drop
               </h2>
               <p id="daily-bonus-desc" className="mt-1 text-sm text-white/55">
-                Claim your free coins and keep the run going.
+                Claim your daily coins.
               </p>
               <div className="my-5 rounded-2xl border border-fuchsia-400/30 bg-fuchsia-500/10 py-4">
-                <div className="font-display text-3xl font-black text-fuchsia-300 glow-pink">
+                <div className="font-sans font-bold text-3xl font-black text-fuchsia-300 ">
                   {formatCoins(GAME.DAILY_BONUS_MIN)}–
                   {formatCoins(GAME.DAILY_BONUS_MAX)}
                 </div>
@@ -74,15 +74,15 @@ export function DailyBonusModal() {
                   claimDaily();
                   close();
                 }}
-                className="w-full rounded-2xl bg-gradient-to-br from-fuchsia-400 to-violet-600 py-3 font-display font-bold text-white shadow-lg shadow-fuchsia-500/30 transition hover:opacity-90 active:scale-95"
+                className="w-full rounded-2xl bg-gradient-to-br from-fuchsia-400 to-violet-600 py-3 font-sans font-bold font-bold text-white shadow-lg shadow-fuchsia-500/30 transition hover:opacity-90 active:scale-95"
               >
-                Claim Bonus
+                Claim
               </button>
               <button
                 onClick={close}
                 className="mt-2 text-xs text-white/40 hover:text-white/70"
               >
-                Maybe later
+                Skip
               </button>
             </div>
           </motion.div>

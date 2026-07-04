@@ -45,7 +45,7 @@ export function FriendsPanel() {
             <span className="h-2 w-2 rounded-full" style={{ background: f.color }} />
             <div className="min-w-0 flex-1">
               <div className="truncate text-xs font-bold text-white/85">{f.name}</div>
-              <div className="text-[9px] text-white/40">
+              <div className="text-xs text-white/40">
                 Lvl {f.stats.level} · {f.stats.wins} wins · best {f.stats.bestMultiplier.toFixed(2)}x
               </div>
             </div>

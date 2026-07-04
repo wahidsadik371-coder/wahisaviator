@@ -51,7 +51,7 @@ export function CosmeticsPanel() {
               <div className="text-xs font-bold text-white/90">{c.name}</div>
               <div className="mt-0.5 flex items-center gap-1">
                 <span
-                  className="rounded px-1 text-[8px] font-bold uppercase"
+                  className="rounded px-1 text-xs font-bold uppercase"
                   style={{ color: rarityColor(c.rarity), background: `${rarityColor(c.rarity)}22` }}
                 >
                   {c.rarity}
@@ -61,7 +61,7 @@ export function CosmeticsPanel() {
                 <button
                   onClick={() => equip(c.id)}
                   disabled={isActive}
-                  className={`tap-target mt-2 w-full rounded-lg px-2 py-1 text-[10px] font-bold transition ${
+                  className={`tap-target mt-2 w-full rounded-lg px-2 py-1 text-xs font-bold transition ${
                     isActive
                       ? "bg-cyan-400/30 text-cyan-200"
                       : "bg-white/10 text-white/70 hover:bg-white/20"
@@ -70,7 +70,7 @@ export function CosmeticsPanel() {
                   {isActive ? "Equipped ✓" : "Equip"}
                 </button>
               ) : (
-                <div className="mt-2 flex items-center justify-center gap-1 text-[9px] text-white/40">
+                <div className="mt-2 flex items-center justify-center gap-1 text-xs text-white/40">
                   <Icon name="sparkles" className="h-3 w-3" />
                   Lvl {c.unlockRequirement.value}
                 </div>

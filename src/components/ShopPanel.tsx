@@ -62,11 +62,11 @@ export function ShopPanel() {
             >
               <div className="mb-1 flex items-center gap-1">
                 {item.limited && (
-                  <span className="rounded bg-rose-400/20 px-1 text-[8px] font-bold uppercase text-rose-300">
+                  <span className="rounded bg-rose-400/20 px-1 text-xs font-bold uppercase text-rose-300">
                     Limited
                   </span>
                 )}
-                <span className="text-[8px] uppercase text-white/40">{item.type}</span>
+                <span className="text-xs uppercase text-white/40">{item.type}</span>
               </div>
               <div className="text-xs font-bold text-white/90">{item.name}</div>
               <div className="mt-2 flex items-center justify-between">
@@ -74,12 +74,12 @@ export function ShopPanel() {
                   {formatCoins(item.price)}
                 </span>
                 {isOwned ? (
-                  <span className="text-[10px] text-emerald-300">Owned ✓</span>
+                  <span className="text-xs text-emerald-300">Owned ✓</span>
                 ) : (
                   <button
                     onClick={() => purchase(item.id)}
                     disabled={!canAfford || soldOut}
-                    className="tap-target rounded-lg bg-emerald-500 px-2.5 py-1 text-[10px] font-bold text-emerald-950 hover:bg-emerald-400 disabled:opacity-30"
+                    className="tap-target rounded-lg bg-emerald-500 px-2.5 py-1 text-xs font-bold text-emerald-950 hover:bg-emerald-400 disabled:opacity-30"
                   >
                     {soldOut ? "Sold out" : "Buy"}
                   </button>

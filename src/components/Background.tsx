@@ -47,7 +47,7 @@ export function Background() {
   });
 
   const stateRef = useRef({
-    stars: makeStars(170),
+    stars: makeStars(100),
     shoot: [] as { x: number; y: number; vx: number; vy: number; life: number }[],
   });
 
@@ -133,12 +133,15 @@ export function Background() {
       className="clip-both pointer-events-none fixed inset-0 -z-10"
       style={{ overflow: "clip" }}
     >
-      {/* Nebula glows — decorative, positioned beyond viewport edges.
-          overflow: clip on the parent ensures they don't contribute
-          to document.scrollWidth on mobile browsers. */}
-      <div className="absolute -left-40 top-[-10%] h-[42rem] w-[42rem] rounded-full bg-violet-700/20 blur-[120px]" />
-      <div className="absolute right-[-15%] top-[20%] h-[38rem] w-[38rem] rounded-full bg-cyan-500/15 blur-[120px]" />
-      <div className="absolute bottom-[-20%] left-[25%] h-[40rem] w-[40rem] rounded-full bg-fuchsia-600/15 blur-[130px]" />
+      {/* Subtle radial gradient — replaces the AI-cliché nebula blobs.
+          A single soft glow from center-top, barely visible. */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 50% at 50% 0%, rgba(34, 211, 238, 0.04), transparent 70%)",
+        }}
+      />
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden="true" />
     </div>
   );

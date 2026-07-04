@@ -66,7 +66,7 @@ export function Toasts() {
           {floats.map((f) => (
             <div
               key={f.id}
-              className="animate-float-up absolute left-0 -translate-x-1/2 whitespace-nowrap font-display text-3xl font-black text-lime-300 glow-lime"
+              className="animate-float-up absolute left-0 -translate-x-1/2 whitespace-nowrap font-sans font-bold text-3xl font-black text-lime-300 "
             >
               +{formatCoins(f.amount)} 🪙
             </div>
