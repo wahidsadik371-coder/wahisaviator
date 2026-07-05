@@ -52,17 +52,25 @@ export default function App() {
     const store = useGameStore.getState();
     store.init();
 
-    engine.cb = {
-      onLaunch: (roundId) => useGameStore.getState().onLaunch(roundId),
-      onCrash: (snap) => useGameStore.getState().onCrash(snap),
-      onTick: (snap) =>
-        useGameStore.getState().checkAutoCashout(snap.multiplier),
-      onCountdownSecond: (sec) => {
-        if (sec > 0 && sec <= 3) sound.play("tick");
-      },
-    };
-    engine.markCallbacksWired();
-    engine.start();
+    // Initialize the engine with the provably-fair seed system.
+    // The engine generates a server seed epoch and pre-computes the first
+    // crash point asynchronously via HMAC-SHA256.
+    let cancelled = false;
+    engine.init(store.clientSeed || "").then(() => {
+      if (cancelled) return;
+      engine.cb = {
+        onLaunch: (roundId) => useGameStore.getState().onLaunch(roundId),
+        onCrash: (snap) => useGameStore.getState().onCrash(snap),
+        onTick: (snap) =>
+          useGameStore.getState().checkAutoCashout(snap.multiplier),
+        onCountdownSecond: (sec) => {
+          if (sec > 0 && sec <= 3) sound.play("tick");
+        },
+        onSeedEpochEnd: (epoch) => useGameStore.getState().onSeedEpochEnd(epoch),
+      };
+      engine.markCallbacksWired();
+      engine.start();
+    });
 
     const unlock = () => sound.unlock();
     window.addEventListener("pointerdown", unlock, { once: true });
@@ -70,15 +78,14 @@ export default function App() {
 
     const bootTimer = window.setTimeout(() => setBooted(true), 350);
 
-    // Phase 9: Install dev tools (dev-only)
     installDevTools({
       getState: () => useGameStore.getState(),
       setState: (s) => useGameStore.setState(s),
     });
-    // Phase 1: Mark session start
     monitoring.breadcrumb("session", "app_mount", {});
 
     return () => {
+      cancelled = true;
       window.clearTimeout(bootTimer);
       window.removeEventListener("pointerdown", unlock);
       window.removeEventListener("keydown", unlock);

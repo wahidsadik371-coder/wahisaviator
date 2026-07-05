@@ -22,6 +22,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 import { engine } from "@/engine/crashEngine";
+import { generateClientSeed } from "@/lib/rng";
 import {
   ACHIEVEMENTS,
   evaluateAchievements,
@@ -167,6 +168,10 @@ export interface GameStore {
   activeEvent: string | null;
   seenEventIds: string[];
 
+  // --- Provably Fair (Phase: RNG Overhaul) ---
+  clientSeed: string;
+  previousServerSeeds: { seed: string; hash: string; nonceRange: [number, number]; rounds: number; revealedAt: number }[];
+
   // --- live (non-persistent) ---
   activeBet: ActiveBet | null;
   chat: ChatMessage[];
@@ -266,6 +271,17 @@ export interface GameStore {
   // --- Phase 10: Events actions ---
   setActiveEvent: (eventId: string | null) => void;
   markEventSeen: (eventId: string) => void;
+
+  // --- Provably Fair actions (RNG Overhaul) ---
+  setClientSeed: (seed: string) => void;
+  rotateServerSeed: () => void;
+  onSeedEpochEnd: (epoch: { serverSeed: string; serverSeedHash: string; nonce: number; startRound: number }) => void;
+  getProvablyFairState: () => {
+    serverSeedHash: string;
+    clientSeed: string;
+    nonce: number;
+    previousSeeds: { seed: string; hash: string; nonceRange: [number, number]; rounds: number }[];
+  };
 }
 
 const DEFAULT_STATS: Stats = {
@@ -391,6 +407,10 @@ export const useGameStore = create<GameStore>()(
       // Phase 10 defaults
       activeEvent: null,
       seenEventIds: [],
+
+      // Provably Fair defaults
+      clientSeed: "",
+      previousServerSeeds: [],
 
       activeBet: null,
       chat: [],
@@ -970,6 +990,9 @@ export const useGameStore = create<GameStore>()(
           tutorialCompleted: false,
           tutorialStep: 0,
           shownContextualTips: [],
+          // Provably Fair reset
+          clientSeed: "",
+          previousServerSeeds: [],
         });
         sound.play("click");
       },
@@ -1450,12 +1473,58 @@ export const useGameStore = create<GameStore>()(
           seenEventIds: [...new Set([...s.seenEventIds, eventId])],
         }));
       },
+
+      // ============= PROVABLY FAIR ACTIONS (RNG Overhaul) =============
+
+      setClientSeed: (seed) => {
+        const trimmed = seed.trim().slice(0, 64) || generateClientSeed();
+        set({ clientSeed: trimmed });
+        // Force engine to rotate server seed with the new client seed
+        engine.setClientSeed(trimmed);
+        sound.play("click");
+      },
+
+      rotateServerSeed: () => {
+        engine.rotateServerSeed();
+        sound.play("click");
+      },
+
+      onSeedEpochEnd: (epoch) => {
+        // Save the revealed server seed for verification
+        set((s) => ({
+          previousServerSeeds: [
+            {
+              seed: epoch.serverSeed,
+              hash: epoch.serverSeedHash,
+              nonceRange: [0, epoch.nonce] as [number, number],
+              rounds: epoch.nonce,
+              revealedAt: Date.now(),
+            },
+            ...s.previousServerSeeds,
+          ].slice(0, 10),
+        }));
+      },
+
+      getProvablyFairState: () => {
+        const epochInfo = engine.getEpochInfo();
+        return {
+          serverSeedHash: epochInfo?.hash ?? "",
+          clientSeed: engine.getClientSeed(),
+          nonce: epochInfo?.nonce ?? 0,
+          previousSeeds: get().previousServerSeeds.map((s) => ({
+            seed: s.seed,
+            hash: s.hash,
+            nonceRange: s.nonceRange,
+            rounds: s.rounds,
+          })),
+        };
+      },
     }),
     {
       name: GAME.STORAGE_KEY,
-      version: 3,
-      // Migration: v1 → v2 added pendingWager. v2 → v3 adds Phase 2-10 state
-      // (streaks, missions, XP, cosmetics, shop, friends, strategies, etc).
+      version: 4,
+      // Migration: v1→v2 pendingWager. v2→v3 Phase 2-10 state. v3→v4 adds
+      // provably-fair seed system (clientSeed, previousServerSeeds).
       migrate: (persisted: unknown, version: number) => {
         if (!persisted || typeof persisted !== "object") return persisted;
         const p = persisted as Record<string, unknown>;
@@ -1463,7 +1532,6 @@ export const useGameStore = create<GameStore>()(
           p.pendingWager = 0;
         }
         if (version < 3) {
-          // Phase 2 defaults
           if (!("dailyStreak" in p)) p.dailyStreak = { currentStreak: 0, longestStreak: 0, lastClaimDate: null, streakMultiplier: 1, streakHistory: [] };
           if (!("totalXP" in p)) p.totalXP = 0;
           if (!("level" in p)) p.level = 1;
@@ -1472,26 +1540,24 @@ export const useGameStore = create<GameStore>()(
           if (!("completedMissionIds" in p)) p.completedMissionIds = [];
           if (!("purchaseHistory" in p)) p.purchaseHistory = [];
           if (!("activeBoosts" in p)) p.activeBoosts = [];
-          // Phase 3 defaults
           if (!("mutedUsers" in p)) p.mutedUsers = [];
           if (!("displayName" in p)) p.displayName = "You";
-          // Phase 4 defaults
           if (!("activeStrategy" in p)) p.activeStrategy = null;
           if (!("strategyState" in p)) p.strategyState = null;
           if (!("conditionalRules" in p)) p.conditionalRules = [];
           if (!("activeGameMode" in p)) p.activeGameMode = "classic";
-          // Phase 5 defaults
           if (!("tutorialCompleted" in p)) p.tutorialCompleted = false;
           if (!("tutorialStep" in p)) p.tutorialStep = 0;
           if (!("contextualTipsEnabled" in p)) p.contextualTipsEnabled = true;
           if (!("shownContextualTips" in p)) p.shownContextualTips = [];
-          // Phase 6 defaults
           if (!("activeTheme" in p)) p.activeTheme = "cyber";
           if (!("konamiActivated" in p)) p.konamiActivated = false;
-          // Phase 8
           if (!("integrityRecords" in p)) p.integrityRecords = [];
-          // Phase 10
           if (!("seenEventIds" in p)) p.seenEventIds = [];
+        }
+        if (version < 4) {
+          if (!("clientSeed" in p)) p.clientSeed = "";
+          if (!("previousServerSeeds" in p)) p.previousServerSeeds = [];
         }
         return p;
       },
@@ -1546,6 +1612,9 @@ export const useGameStore = create<GameStore>()(
         integrityRecords: s.integrityRecords,
         // Phase 10
         seenEventIds: s.seenEventIds,
+        // Provably Fair
+        clientSeed: s.clientSeed,
+        previousServerSeeds: s.previousServerSeeds,
       }),
     }
   )
