@@ -56,7 +56,7 @@ export function FairnessVerifier() {
           <li>A <strong>server seed</strong> is generated and its SHA-256 hash shown below.</li>
           <li>Your <strong>client seed</strong> mixes into each round's outcome.</li>
           <li>A <strong>nonce</strong> increments each round (0, 1, 2, ...).</li>
-          <li>Crash = HMAC-SHA256(serverSeed, clientSeed:nonce) → 0.99/(1-r)</li>
+          <li>Crash = HMAC-SHA256(serverSeed, clientSeed:nonce) → 1.0/(1-r^0.9)</li>
           <li>After 100 rounds, the server seed is <strong>revealed</strong> for verification.</li>
         </ol>
         <p className="mt-2 text-xs text-amber-200/70">
@@ -180,14 +180,14 @@ export function FairnessVerifier() {
         <pre className="mt-1 overflow-x-auto rounded-lg bg-black/30 p-2 font-mono text-xs text-cyan-300">
 {`hash = HMAC-SHA256(serverSeed, clientSeed:nonce)
 r = parseInt(hash.slice(0,13), 16) / 2^52
-crash = floor(0.99 / (1 - r) * 100) / 100
+crash = floor(1.0 / (1 - r^0.9) * 100) / 100
 return clamp(crash, 1.00, 1,000,000)`}
         </pre>
         <div className="mt-2 grid grid-cols-2 gap-1 text-xs">
           <div>Precision: 52-bit</div>
           <div>Unique values: ~4.5 × 10¹⁵</div>
-          <div>P(crash = 1.00x): ~5%</div>
-          <div>P(crash ≥ 2x): ~48%</div>
+          <div>P(crash = 1.00x): 0% (min 1.01x)</div>
+          <div>P(crash ≥ 2x): ~54%</div>
         </div>
       </div>
     </div>

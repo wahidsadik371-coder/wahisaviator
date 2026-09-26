@@ -55,14 +55,32 @@ export async function sha256Hex(input: string): Promise<string> {
 /**
  * Convert an HMAC-SHA256 hex digest to a crash point.
  * Extracts the first 13 hex chars (52 bits) for maximum float precision.
- * Uses the same 0.99/(1-r) formula as Bustabit.
+ *
+ * FUN-TUNED FORMULA (demo-optimized):
+ *   coefficient = 1.0 (no house edge — this is a demo with virtual coins)
+ *   r is biased via r^0.9 power transformation, which shifts the uniform
+ *   distribution so more rounds survive to higher multipliers.
+ *   minimum crash = 1.01x (no instant 1.00x deaths — every round at least
+ *   goes a tiny bit above 1x, making the game feel more exciting).
+ *
+ * Result vs original Bustabit formula (0.99/(1-r)):
+ *   P(crash >= 2x):  49.5% → 53.7%  (+4pp more rounds reach 2x)
+ *   P(crash >= 10x): 9.9%  → 11.1%  (+1.2pp more rounds reach 10x)
+ *   P(crash = 1.00x): ~5%  → 0%     (no instant deaths)
+ *   Median crash:    ~1.98x → ~2.15x (slightly higher median)
  */
 export function hashToCrashPoint(hash: string): number {
   // 13 hex chars = 52 bits. 2^52 = 4,503,599,627,370,496.
   const r = parseInt(hash.slice(0, 13), 16) / 4503599627370496;
-  // Bustabit formula: 0.99 / (1 - r). The 0.99 creates the house edge.
-  const result = Math.floor((100 * 0.99) / (1 - r)) / 100;
-  return Math.max(1.0, Math.min(result, CAP));
+  // Power transformation: biases r toward 1, making 1/(1-r) larger
+  // on average → higher multipliers more often. Exponent 0.9 gives a
+  // modest boost (+4pp at 2x) without making the game feel rigged.
+  const biased = Math.pow(r, 0.9);
+  // Coefficient 1.0 (no house edge — fine for a demo with virtual coins)
+  const result = Math.floor((100 * 1.0) / (1 - biased)) / 100;
+  // Minimum 1.01x — no instant 1.00x crashes. Every round at least
+  // goes slightly above 1x before crashing.
+  return Math.max(1.01, Math.min(result, CAP));
 }
 
 // ============================================================
@@ -82,10 +100,10 @@ function fnv1a(str: string): number {
 /** Synchronous fallback crash point — used only if Web Crypto is unavailable. */
 export function crashFromSeedSync(seed: string): number {
   const h = fnv1a("crash:" + seed);
-  if (h % 33 === 0) return 1.0;
   const r = h / 4294967296;
-  const result = Math.floor((100 * 0.99) / (1 - r)) / 100;
-  return Math.max(1.0, Math.min(result, CAP));
+  const biased = Math.pow(r, 0.9);
+  const result = Math.floor((100 * 1.0) / (1 - biased)) / 100;
+  return Math.max(1.01, Math.min(result, CAP));
 }
 
 /** Synchronous commitment hash fallback. */
